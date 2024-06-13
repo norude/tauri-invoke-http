@@ -10,13 +10,13 @@ fn my_command(args: u64) -> Result<String, ()> {
 }
 
 fn main() {
-  /// Allow from all origins for testing purposes. 
-  /// Should be allow listed to reduce risks of accidential exposure to other networks.
-  let http = tauri_invoke_http::Invoke::new(["*"]});
+  // Allow from all origins for testing purposes. 
+  // Should be allow listed to reduce risks of accidential exposure to other networks.
+  let http = tauri_invoke_http::Invoke::new(["*"]);
   tauri::Builder::default()
     .invoke_system(http.initialization_script(), http.responder())
     .setup(move |app| {
-      http.start(app.handle());
+      http.start(app.handle().clone());
       Ok(())
     })
     .invoke_handler(tauri::generate_handler![my_command])
